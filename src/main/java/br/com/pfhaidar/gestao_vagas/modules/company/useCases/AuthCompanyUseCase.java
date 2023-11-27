@@ -1,5 +1,8 @@
 package br.com.pfhaidar.gestao_vagas.modules.company.useCases;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import javax.naming.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +44,9 @@ public class AuthCompanyUseCase {
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
+        // Configuracao de Token
         var token = JWT.create().withIssuer("javagas")
+            .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
             .withSubject(company.getId().toString())
             .sign(algorithm);
         return token;
